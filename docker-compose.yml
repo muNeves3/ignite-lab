@@ -1,0 +1,19 @@
+services:
+  ignitelab-postgres: # nome do serviço
+    image: postgres # imagem que o docker irá se basear para criar o container
+    environment: # variáveis de ambiente
+      POSTGRES_PASSWORD: 'postgres'
+    hostname: ignitelab-postgres # nome do container
+    
+    ports: # portas para acessar o container
+      - '5432:5432'
+    volumes: # onde serão armazenadas as informações do banco
+      - .docker/dbdata:/var/lib/postgresql/data
+
+  app:
+    build: .
+    restart: "always"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - ignitelab-postgres
